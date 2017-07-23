@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-int degree;
+int degree; // Параметр дерева
 
 
 struct node{
-    int is_leaf;
-    int is_root;
-    int n;
-    int* keys;
-    struct node **p;
+    int is_leaf; // Является ли узел листом(нет потомков)
+    int is_root; // Является ли узел основанием всего дерева (Устанавливается один раз)
+    int n; // Количество ключей в массиве
+    int* keys; // Массив ключей
+    struct node **p; // Массив указтелей на другие узлы
 };
 
+/* Очищает узел(используется каждый раз при создании узла)*/
 void clear_node(node* root){
     root->keys = (int*)malloc(sizeof(int)*degree);
     root->p = (node**)malloc(sizeof(node*)*(degree+1));
@@ -38,6 +39,7 @@ void print_b_tree(node* root){
     }
 }
 
+/* Перепроверяет всё дерево на листы и -не листы  и изменяет параметр root->is_leaf*/
 void check_leaf(node* root){
     for (int i = 0; i != root->n + 1; ++i) {
         if (root->p[i] ) {
@@ -49,7 +51,7 @@ void check_leaf(node* root){
     }
 }
 
-
+/* Добавлеят новое значение в массив ключей */
 int add_value_in_array(node* root, int value){
     if (root -> is_leaf == 1) {
         int step = root->n;
@@ -86,7 +88,7 @@ int add_value_in_array(node* root, int value){
     return 0;
 }
 
-
+/* Делит массив ключей и массив указателей на левую и правую половины*/
 int split(node* root){
     int split_pos;
     if (degree % 2 == 0){
@@ -140,6 +142,7 @@ int split(node* root){
     return 0;
 }
 
+/* Перестраивает корень(основание) дерева если количесво ключей в узле достигло максимума*/
 int rebuild_root(node* root){
     if (root->is_root == 1) {
         if (root->n >= degree) {
@@ -184,6 +187,7 @@ int rebuild_root(node* root){
     return 0;
 }
 
+/* Перестраивает узлы в дереве если узлы переполнены */
 int rebuild_b_tree(node*root){
     if (root) {
             for (int i = 0; i < root->n + 1; ++i) {

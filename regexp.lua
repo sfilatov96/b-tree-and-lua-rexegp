@@ -16,8 +16,10 @@ else
     print("Error: Unexpected Command variables!");
     os.exit()
 end
-
+print(regexp)
 for line in io.lines(file) do
-    print(line)
+    if line:match(regexp) then
+        print(line)
+    end
 end
 
