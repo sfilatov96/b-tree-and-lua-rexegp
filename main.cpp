@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define TRUE 1
+#define FALSE 0
 int degree; // Параметр дерева
 
 
@@ -21,8 +23,8 @@ void clear_node(node* root){
     }
     root->n=0;
     root->p[degree+1]=NULL;
-    root->is_leaf=1;
-    root->is_root=0;
+    root->is_leaf=TRUE;
+    root->is_root=FALSE;
 }
 
 void print_b_tree(node* root){
@@ -43,10 +45,10 @@ void print_b_tree(node* root){
 void check_leaf(node* root){
     for (int i = 0; i != root->n + 1; ++i) {
         if (root->p[i] ) {
-            root->is_leaf=0;
+            root->is_leaf=FALSE;
             check_leaf(root->p[i]);
         } else {
-            root->is_leaf=1;
+            root->is_leaf=TRUE;
         }
     }
 }
@@ -144,7 +146,7 @@ int split(node* root){
 
 /* Перестраивает корень(основание) дерева если количесво ключей в узле достигло максимума*/
 int rebuild_root(node* root){
-    if (root->is_root == 1) {
+    if (root->is_root == TRUE) {
         if (root->n >= degree) {
             int split_pos;
             if (degree % 2 == 0){
@@ -174,14 +176,14 @@ int rebuild_root(node* root){
             right->p[0] = root->p[split_pos + 1];
 
             if (root->p[0]){
-                root->is_leaf=0;
+                root->is_leaf=FALSE;
             }
 
             root->p[0] = left;
             root->p[1] = right;
             root->n = 1;
             root->keys[0] = middle_val;
-            root->is_leaf = 0;
+            root->is_leaf = FALSE;
         }
     }
     return 0;
@@ -215,7 +217,7 @@ int get(node* root, int value){
                 return 0;
             }
         }
-        if (ptr->is_leaf == 1){
+        if (ptr->is_leaf == TRUE){
             printf("Value not found in B-tree!\n");
             return 0;
         }
@@ -238,7 +240,7 @@ int get(node* root, int value){
 
 
 int main() {
-    printf("B-tree degreeodel Builder!\n");
+    printf("B-tree model Builder!\n");
     printf("a -- Added new value in B-tree\n");
     printf("f -- Find value in tree\n");
     printf("d -- Display all data from B-tree\n");
@@ -253,7 +255,7 @@ int main() {
 
     node *root = (node*)malloc(sizeof(struct node));
     clear_node(root);
-    root->is_root=1;
+    root->is_root=TRUE;
     char choice;
     int value;
     while(1) {
