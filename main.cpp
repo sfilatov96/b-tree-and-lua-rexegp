@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #define TRUE 1
 #define FALSE 0
+#define MIN_DEGREE 3
 int degree; // Параметр дерева
 
 
@@ -248,8 +249,8 @@ int main() {
 
     printf("Enter B-tree degree: ");
     scanf("%d", &degree);
-    if (degree < 2) {
-        printf("Bad degree! Degree must be greater than 1!");
+    if (degree < MIN_DEGREE) {
+        printf("Bad degree! Degree must be greater than 2!");
         exit(0);
     }
 
