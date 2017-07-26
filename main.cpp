@@ -220,7 +220,7 @@ int get(node* root, int value){
         }
         if (ptr->is_leaf == TRUE){
             printf("Value not found in B-tree!\n");
-            return 0;
+            return -1;
         }
         if (ptr->keys[0] > value) {
             ptr = ptr -> p[0];
@@ -250,7 +250,7 @@ int main() {
     printf("Enter B-tree degree: ");
     scanf("%d", &degree);
     if (degree < MIN_DEGREE) {
-        printf("Bad degree! Degree must be greater than 2!");
+        printf("Bad degree! Degree must be greater than 2!\n");
         exit(0);
     }
 
@@ -266,7 +266,12 @@ int main() {
             case 'a':
                 printf("Enter Value: ");
                 scanf("%d", &value);
-                insert(root,value);
+                if(get(root, value) == 0){
+                    printf("\nDuplicate error! That value is already exists!\n");
+                } else {
+                    insert(root, value);
+                    printf("\nSuccesful Added!\n");
+                }
                 break;
             case 'f':
                 printf("Enter Value: ");
