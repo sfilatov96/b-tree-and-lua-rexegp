@@ -47,6 +47,7 @@ void check_leaf(node* root){
     for (int i = 0; i != root->n + 1; ++i) {
         if (root->p[i] ) {
             root->is_leaf=FALSE;
+
             check_leaf(root->p[i]);
         } else {
             root->is_leaf=TRUE;
@@ -56,7 +57,7 @@ void check_leaf(node* root){
 
 /* Добавлеят новое значение в массив ключей */
 int add_value_in_array(node* root, int value){
-    if (root -> is_leaf == 1) {
+    if (root -> is_leaf == TRUE) {
         int step = root->n;
         for (int i = 0; i < degree; i++) {
             if (root->keys[i] > value) {
@@ -65,7 +66,7 @@ int add_value_in_array(node* root, int value){
 
             }
         }
-        for (int j = degree - 1; j >= step; j--) {
+        for (int j = degree - 1; j > step; j--) {
             root->keys[j] = root->keys[j - 1];
         }
         root->keys[step] = value;
@@ -114,10 +115,11 @@ int split(node* root){
                     left->keys[j] = ptr->keys[j];
                     left->p[j] = ptr->p[j];
                     left->n = left->n + 1;
+                    printf("\n%d\n", left->keys[j]);
                 }
                 if (j > split_pos) {
                     right->keys[j- split_pos - 1] = ptr->keys[j];
-                    right->p[j - split_pos - 1] = ptr->p[j+1];
+                    right->p[j - split_pos] = ptr->p[j+1];
                     right->n = right->n +1;
                 }
             }
@@ -132,10 +134,15 @@ int split(node* root){
 
                 }
             }
-            for (int j = degree - 1; j >= step; j--) {
+            for (int j = degree - 1; j != step; j--) {
                 root->keys[j] = root->keys[j - 1];
                 root->p[j + 1] = root->p[j];
             }
+            //printf("\nstep=%d", step);
+//            print_b_tree(left);
+//            printf("%d\n", left->n);
+//            print_b_tree(right);
+//            printf("%d\n", right->n);
             root->p[step] = left;
             root->p[step+1] = right;
             root->keys[step] = middle_val;
@@ -228,7 +235,6 @@ int get(node* root, int value){
         if (ptr->keys[ptr->n - 1] < value) {
             ptr = ptr->p[ptr->n];
         }
-
         for (int i = 0; i < ptr->n; ++i) {
             if ((ptr->keys[i] < value) && (ptr->keys[i + 1] > value)) {
                 ptr = ptr->p[i + 1];
@@ -266,7 +272,7 @@ int main() {
             case 'a':
                 printf("Enter Value: ");
                 scanf("%d", &value);
-                if(get(root, value) == 0){
+                if (get(root, value) == 0) {
                     printf("\nDuplicate error! That value is already exists!\n");
                 } else {
                     insert(root, value);
