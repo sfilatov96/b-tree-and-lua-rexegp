@@ -227,7 +227,9 @@ func get(root *node, value int) int {
 
 		for i := 0; i < ptr.n; i++ {
 			if (ptr.keys[i] < value) && (ptr.keys[i+1] > value) {
-				ptr = ptr.p[i+1]
+				if ptr.p[i+1] != nil {
+					ptr = ptr.p[i+1]
+				}
 			}
 		}
 	}

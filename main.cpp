@@ -115,7 +115,6 @@ int split(node* root){
                     left->keys[j] = ptr->keys[j];
                     left->p[j] = ptr->p[j];
                     left->n = left->n + 1;
-                    printf("\n%d\n", left->keys[j]);
                 }
                 if (j > split_pos) {
                     right->keys[j- split_pos - 1] = ptr->keys[j];
@@ -138,11 +137,6 @@ int split(node* root){
                 root->keys[j] = root->keys[j - 1];
                 root->p[j + 1] = root->p[j];
             }
-            //printf("\nstep=%d", step);
-//            print_b_tree(left);
-//            printf("%d\n", left->n);
-//            print_b_tree(right);
-//            printf("%d\n", right->n);
             root->p[step] = left;
             root->p[step+1] = right;
             root->keys[step] = middle_val;
@@ -237,7 +231,9 @@ int get(node* root, int value){
         }
         for (int i = 0; i < ptr->n; ++i) {
             if ((ptr->keys[i] < value) && (ptr->keys[i + 1] > value)) {
-                ptr = ptr->p[i + 1];
+                if (ptr->p[i+1]) {
+                    ptr = ptr->p[i + 1];
+                }
             }
         }
     }
